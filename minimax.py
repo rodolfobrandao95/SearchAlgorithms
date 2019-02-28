@@ -27,8 +27,3 @@ def get_min(arr):
             min_winners.append(min(arr[i], arr[i + 1]))
 
     return get_max(min_winners)
-
-
-leaves = [8, 10, 2, 1, 15, 9, 7, 1, 3, 2, 7, 1, 2, 10, 17, 15]
-
-print(minimax(leaves, 5))
