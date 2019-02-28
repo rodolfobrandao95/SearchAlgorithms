@@ -26,37 +26,26 @@ maze_map = {
 }
 
 
-# count_cost = 0
-result = []
-
-
 def search(graph, begin_node, end_node):
-    result.append(begin_node)
-    count_cost = 0
+    visited = [begin_node]
+    total_cost = 0.0
 
     lowest_adjacent = choose_lowest_adjacent(
-        graph, begin_node, end_node, result
+        graph, begin_node, end_node, visited
     )
 
-    count_cost += lowest_adjacent[1]
-    result.append(lowest_adjacent[0])
+    total_cost += lowest_adjacent[1]
+    visited.append(lowest_adjacent[0])
 
     while (lowest_adjacent[0] != end_node):
         lowest_adjacent = choose_lowest_adjacent(
-            graph, lowest_adjacent[0], end_node, result
+            graph, lowest_adjacent[0], end_node, visited
         )
 
-        count_cost += lowest_adjacent[1]
-        result.append(lowest_adjacent[0])
+        total_cost += lowest_adjacent[1]
+        visited.append(lowest_adjacent[0])
 
-    return (result, count_cost)
-
-
-def get_heuristic(current_point, goal_point):
-    x = pow(goal_point[0] - (current_point[0]), 2)
-    y = pow(goal_point[1] - (current_point[1]), 2)
-
-    return round(sqrt(x + y), 2)
+    return (visited, total_cost)
 
 
 def choose_lowest_adjacent(graph, current_node, goal_node, visited):
@@ -87,8 +76,12 @@ def choose_lowest_adjacent(graph, current_node, goal_node, visited):
     return min(adjacents_cost, key=lambda tup: tup[1])
 
 
+def get_heuristic(current_point, goal_point):
+    x = pow(goal_point[0] - (current_point[0]), 2)
+    y = pow(goal_point[1] - (current_point[1]), 2)
+
+    return sqrt(x + y)
+
+
 def is_dead_end(graph, current_adjacent):
     return (len(graph[current_adjacent]['adjacent']) == 1)
-
-
-print(search(maze_map, 'A', 'Q'))
